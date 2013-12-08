@@ -38,9 +38,10 @@ Fw1Generator.prototype.askFor = function askFor() {
 Fw1Generator.prototype.app = function app() {
   var self = this;
   var baseDir = process.cwd();
+
   this.mkdir('src');
   this.mkdir('src/fw1');
-  this.mkdir('src/di1');
+  
 
   this.mkdir('org');
   this.mkdir('org/corfield');
@@ -52,20 +53,21 @@ Fw1Generator.prototype.app = function app() {
     console.log( "INFO: Moving FW/1 files into place" );
 
     //Move the framwork CFC into its folder
-    self.copy( baseDir + '/src/fw1/org/corfield/framework.cfc', 'org/corfield/framework.cfc' );
+    self.copy( baseDir + '/src/fw1/org/corfield/framework.cfc', baseDir + '/org/corfield/framework.cfc' );
 
     //Move the skeleton files into their respective folders
-    self.copy( baseDir + '/src/fw1/skeleton/Application.cfc', 'Application.cfc');
+    self.copy( baseDir + '/src/fw1/skeleton/Application.cfc', baseDir + '/Application.cfc');
 
   })
-
+  console.log( this.includeDI1 );
   if( this.includeDI1 == true ){
+      this.mkdir('src/di1');
       console.log( "INFO: Retrieving DI/1 from GitHub repo" );
       this.cloneRepo( 'git@github.com:framework-one/di1.git', baseDir + '/src/di1', function( success ){
-        console.log( success );
+        
         console.log( "INFO: Moving DI/1 files into place" );
 
-        self.copy( baseDir + '/src/di1/ioc.cfc', 'org/corfield/ioc.cfc');
+        self.copy( baseDir + '/src/di1/ioc.cfc', baseDir + '/org/corfield/ioc.cfc');
 
       })
   }
@@ -74,16 +76,20 @@ Fw1Generator.prototype.app = function app() {
 
 Fw1Generator.prototype.cloneRepo = function cloneRepo( repoPath, localPath, callback ) {
   
-  //require('simple-git')( baseDir + localPath )
-  //  .clone( repoPath, localPath );
+  if( repoPath && localPath && callback ){
 
+    require('simple-git')( localPath )
+    .clone( repoPath, localPath, callback );
+
+    /*
+    require('simple-git')( localPath )
+       .init()
+       .addRemote( 'origin', repoPath )
+       .fetch()
+       .checkout( 'master', callback );
+    */
+    
+  }
   
-  require('simple-git')( baseDir + localPath )
-     .init()
-     .addRemote( 'origin', repoPath )
-     .fetch()
-     .checkout( 'master' );
-  
-  //   callback( true );
 
 }
