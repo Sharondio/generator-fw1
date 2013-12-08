@@ -9,7 +9,7 @@ A generator for [Yeoman](http://yeoman.io) that creates a skeleton application u
 * [npm](https://npmjs.org)
 
 
-Once the requirements above are installed, you need to install Yeoman.
+Next, you need to install Yeoman.
 
 ```
 $ npm install -g yo
