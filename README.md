@@ -4,9 +4,9 @@ A generator for [Yeoman](http://yeoman.io) that creates a skeleton application u
 
 
 ## Requirements
- [Git](http://git-scm.com)
- [NodeJS](http://nodejs.org)
- [npm](https://npmjs.org)
+* [Git](http://git-scm.com)
+* [NodeJS](http://nodejs.org)
+* [npm](https://npmjs.org)
 
 
 Once the requirements above are installed, you need to install Yeoman.
