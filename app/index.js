@@ -48,18 +48,11 @@ Fw1Generator.prototype.app = function app() {
 
   console.log( "INFO: Retrieving FW/1 from GitHub repo" );
 
-  this.cloneRepo( 'git@github.com:framework-one/fw1.git', baseDir + '/src/fw1', function( err ){
-    
-    console.log( "INFO: Moving FW/1 files into place - " + baseDir );
+  this.cloneRepo( 'git@github.com:framework-one/fw1.git', baseDir + '/src/fw1', function (err) {
+    console.log("cloning.done");
+    this.copyDirs();
+  });
 
-    //Move the framwork CFC into its folder
-    app.copy( baseDir + '/src/fw1/org/corfield/framework.cfc', baseDir + '/org/corfield/framework.cfc' );
-
-    //Move the skeleton files into their respective folders
-    app.copy( baseDir + '/src/fw1/skeleton/Application.cfc', baseDir + '/Application.cfc');
-
-  })
-  
   
   if( this.includeDI1 ){
 
@@ -76,12 +69,24 @@ Fw1Generator.prototype.app = function app() {
   
 };
 
-Fw1Generator.prototype.cloneRepo = function cloneRepo( repoPath, localPath, callback ) {
+Fw1Generator.prototype.copyDirs = function copyDirs () {
+  var cb = this.async();
+  console.log( "INFO: Moving FW/1 files into place - " + baseDir );
+  //Move the framwork CFC into its folder
+  this.copy( baseDir + '/src/fw1/org/corfield/framework.cfc', baseDir + '/org/corfield/framework.cfc' );
+  //Move the skeleton files into their respective folders
+  this.copy( baseDir + '/src/fw1/skeleton/Application.cfc', baseDir + '/Application.cfc');
+  cb();
+}
+
+Fw1Generator.prototype.cloneRepo = function cloneRepo( repoPath, localPath ) {
   
-  if( repoPath && localPath && callback ){
+  var cb = this.async();
+
+  if( repoPath && localPath ){
 
     require('simple-git')( localPath )
-    .clone( repoPath, localPath, callback );
+    .clone( repoPath, localPath, cb );
 
     /*
     require('simple-git')( localPath )
